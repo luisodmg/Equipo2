@@ -53,7 +53,7 @@ function update() {
     ball.x >= catcher.x &&
     ball.x <= catcher.x + catcher.width
   ) {
-    score++;
+    score = score + 2;
     resetBall();
     // Aumenta un poco la dificultad cada 5 puntos
     if (score % 5 === 0) ball.speed += 0.5;
