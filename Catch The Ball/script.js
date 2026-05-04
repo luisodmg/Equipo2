@@ -58,7 +58,7 @@ function update() {
 
   // 🚫 Si la bola cae fuera del canvas
   if (ball.y > canvas.height) {
-    alert(`💀 Game Over! Score: ${score}`);
+    alert(`💀 Immediate DEATH! Score: ${score}`);
     score = 0;
     ball.speed = 3;
     resetBall();
