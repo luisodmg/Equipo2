@@ -13,7 +13,7 @@ body {
 canvas {
   border: 2px solid #fff;
   border-radius: 10px;
-  background: #000;
+  background: #2a1f45;
 }
 
 .game-layout {
@@ -24,7 +24,7 @@ canvas {
 
 .score-panel {
   min-width: 190px;
-  background: #111;
+  background: #2a1f45;
   border: 2px solid #fff;
   border-radius: 10px;
   padding: 12px;
@@ -49,5 +49,5 @@ canvas {
 }
 
 .score-panel th {
-  background: #222;
+  background: #2a1f45;
 }
