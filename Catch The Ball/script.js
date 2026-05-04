@@ -29,9 +29,11 @@ let catcher = {
 
 let score = 0;
 let mouseX = canvas.width / 2;
-let scoreHistory = [];
 const maxScores = 5;
 const scoreTableBody = document.getElementById("scoreTableBody");
+const scoreStorageKey = "catchTheBallScoreHistory";
+
+let scoreHistory = loadScoreHistory();
 
 // 🖱 Evento: mover el mouse
 canvas.addEventListener("mousemove", (e) => {
@@ -77,21 +79,55 @@ function resetBall() {
 
 function saveScore() {
   scoreHistory.unshift(score);
-  scoreHistory = scoreHistory.slice(0, maxScores);
+  scoreHistory = scoreHistory
+    .sort((firstScore, secondScore) => secondScore - firstScore)
+    .slice(0, maxScores);
+  saveScoreHistory();
   renderScoreTable();
+}
+
+function loadScoreHistory() {
+  try {
+    const storedScores = localStorage.getItem(scoreStorageKey);
+
+    if (!storedScores) {
+      return [];
+    }
+
+    const parsedScores = JSON.parse(storedScores);
+
+    if (!Array.isArray(parsedScores)) {
+      return [];
+    }
+
+    return parsedScores.filter((scoreValue) => Number.isFinite(scoreValue));
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveScoreHistory() {
+  try {
+    localStorage.setItem(scoreStorageKey, JSON.stringify(scoreHistory));
+  } catch (error) {
+    // Ignore storage errors so the game keeps working without persistence.
+  }
 }
 
 function renderScoreTable() {
   scoreTableBody.innerHTML = "";
+  const rankedScores = [...scoreHistory].sort(
+    (firstScore, secondScore) => secondScore - firstScore
+  );
 
-  if (scoreHistory.length === 0) {
+  if (rankedScores.length === 0) {
     const emptyRow = document.createElement("tr");
     emptyRow.innerHTML = `<td colspan="2">Sin partidas aun</td>`;
     scoreTableBody.appendChild(emptyRow);
     return;
   }
 
-  scoreHistory.forEach((points, index) => {
+  rankedScores.forEach((points, index) => {
     const row = document.createElement("tr");
     row.innerHTML = `<td>${index + 1}</td><td>${points}</td>`;
     scoreTableBody.appendChild(row);
