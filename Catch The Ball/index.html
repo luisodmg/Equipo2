@@ -7,7 +7,26 @@
   </head>
   <body>
     <h1 class="game-title">Catch the Ball</h1>
-    <canvas id="gameCanvas"></canvas>
+    <div class="game-layout">
+      <canvas id="gameCanvas"></canvas>
+      
+      <aside class="score-panel">
+        <h2>Ultimos Scores</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Puntos</th>
+            </tr>
+          </thead>
+          <tbody id="scoreTableBody">
+            <tr>
+              <td colspan="2">Sin partidas aun</td>
+            </tr>
+          </tbody>
+        </table>
+      </aside>
+    </div>
     <script src="script.js"></script>
   </body>
 </html>

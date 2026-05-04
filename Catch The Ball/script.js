@@ -6,7 +6,7 @@ const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
 // 🔧 Ajustes del lienzo
-canvas.width = 400;
+canvas.width = 700;
 canvas.height = 600;
 
 // 🏀 Configuración de la bola
@@ -15,7 +15,7 @@ let ball = {
   y: 0,
   radius: 15,
   speed: 3,
-  color: "red",
+  color: "#8cff95",
 };
 
 // 🧍 Control del jugador (la barra)
@@ -24,11 +24,16 @@ let catcher = {
   height: 10,
   x: canvas.width / 2 - 40, // Centrado al inicio
   y: canvas.height - 40,
-  color: "blue",
+  color: "#8cff95",
 };
 
 let score = 0;
 let mouseX = canvas.width / 2;
+const maxScores = 5;
+const scoreTableBody = document.getElementById("scoreTableBody");
+const scoreStorageKey = "catchTheBallScoreHistory";
+
+let scoreHistory = loadScoreHistory();
 
 // 🖱 Evento: mover el mouse
 canvas.addEventListener("mousemove", (e) => {
@@ -71,6 +76,63 @@ function resetBall() {
   ball.y = 0;
 }
 
+function saveScore() {
+  scoreHistory.unshift(score);
+  scoreHistory = scoreHistory
+    .sort((firstScore, secondScore) => secondScore - firstScore)
+    .slice(0, maxScores);
+  saveScoreHistory();
+  renderScoreTable();
+}
+
+function loadScoreHistory() {
+  try {
+    const storedScores = localStorage.getItem(scoreStorageKey);
+
+    if (!storedScores) {
+      return [];
+    }
+
+    const parsedScores = JSON.parse(storedScores);
+
+    if (!Array.isArray(parsedScores)) {
+      return [];
+    }
+
+    return parsedScores.filter((scoreValue) => Number.isFinite(scoreValue));
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveScoreHistory() {
+  try {
+    localStorage.setItem(scoreStorageKey, JSON.stringify(scoreHistory));
+  } catch (error) {
+    // Ignore storage errors so the game keeps working without persistence.
+  }
+}
+
+function renderScoreTable() {
+  scoreTableBody.innerHTML = "";
+  const rankedScores = [...scoreHistory].sort(
+    (firstScore, secondScore) => secondScore - firstScore
+  );
+
+  if (rankedScores.length === 0) {
+    const emptyRow = document.createElement("tr");
+    emptyRow.innerHTML = `<td colspan="2">Sin partidas aun</td>`;
+    scoreTableBody.appendChild(emptyRow);
+    return;
+  }
+
+  rankedScores.forEach((points, index) => {
+    const row = document.createElement("tr");
+    row.innerHTML = `<td>${index + 1}</td><td>${points}</td>`;
+    scoreTableBody.appendChild(row);
+  });
+}
+
 // 🎨 Dibujar todo en pantalla
 function draw() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -99,3 +161,4 @@ function gameLoop() {
 }
 
 gameLoop();
+renderScoreTable();

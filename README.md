@@ -1,47 +1,59 @@
 # Catch The Ball
 
-Catch The Ball is a small browser game built with plain HTML, CSS, and JavaScript. The goal is simple: move the catcher bar with your mouse and keep the falling ball from hitting the bottom of the screen.
+Catch The Ball is a small browser game built with plain HTML, CSS, and JavaScript. The goal is to keep the falling ball in play for as long as possible by moving the catcher with your mouse.
 
-## How to Play
+## Overview
 
-1. Open the game in a browser.
-2. Move your mouse left and right inside the canvas.
-3. Catch the red ball with the white bar.
-4. Each successful catch increases your score.
-5. Every 5 points, the ball falls a little faster.
-6. If the ball reaches the bottom of the canvas, the game resets and your score goes back to zero.
+The game runs entirely in the browser. A ball falls from the top of the canvas, the player controls a paddle near the bottom, and each successful catch increases the score. The current version also shows a title above the game and a score history panel beside the canvas.
+
+## How To Play
+
+1. Open the project in a browser by launching `index.html`.
+2. Move your mouse left and right over the canvas.
+3. Use the paddle to catch the falling ball.
+4. Each catch adds points to your score.
+5. The ball speeds up gradually as your score increases.
+6. If the ball reaches the bottom, the round ends and the game resets.
 
 ## Game Rules
 
-- The ball starts at a random horizontal position near the top of the canvas.
-- The catcher follows your mouse position.
-- A catch is registered when the ball reaches the catcher area and its horizontal position overlaps the bar.
-- Missing the ball triggers a `Game Over` alert and restarts the round.
+- The ball starts near the top of the canvas at a random horizontal position.
+- The catcher follows the mouse horizontally.
+- A catch is registered when the ball overlaps the catcher area.
+- Missing the ball triggers a `Game Over` alert.
+- The final score is saved to the history panel when a round ends.
+- The score history keeps the most recent 5 completed rounds.
+
+## Current UI
+
+- A title reading `Catch the Ball` appears above the canvas.
+- The game canvas sits beside a score history panel.
+- The score history table shows the last few completed scores.
+- If there are no saved scores yet, the panel displays `Sin partidas aun`.
 
 ## Project Structure
 
-- `index.html` sets up the canvas and loads the game script.
-- `style.css` centers the game on the page and styles the canvas.
-- `script.js` contains the full game logic, rendering, collision detection, and score handling.
+- `Catch The Ball/index.html` defines the page layout, title, canvas, and score table.
+- `Catch The Ball/style.css` styles the page, canvas, title, and score history panel.
+- `Catch The Ball/script.js` contains the gameplay logic, rendering loop, collision detection, and score tracking.
 
-## Features
+## Technical Details
 
-- Canvas-based gameplay
-- Mouse-controlled catcher
-- Randomized ball position on each reset
-- Score tracking
-- Progressive difficulty increase
-- Simple restart flow after game over
+The game uses the Canvas 2D API for rendering and `requestAnimationFrame` for animation. No external libraries are required.
 
-## Technical Notes
+Current gameplay values:
 
-The game uses the browser’s `requestAnimationFrame` loop for smooth animation. Rendering is handled directly with the Canvas 2D API, so no external libraries are required.
+- Canvas size: `700 x 600`
+- Ball radius: `15`
+- Paddle width: `80`
+- Paddle height: `10`
+- Starting ball speed: `3`
+- Score per catch: `2`
+- Maximum stored scores: `5`
 
-The current game window is fixed at `400 x 600` pixels. The catcher starts near the bottom of the canvas, and the ball speed increases gradually as the score rises.
+## Running The Game
 
-## How to Run
-
-You can run the project by opening `index.html` in a browser.
+You can run the project by opening `Catch The Ball/index.html` in a browser.
 
 If you are using Visual Studio Code, you can also:
 
@@ -51,11 +63,11 @@ If you are using Visual Studio Code, you can also:
 
 ## Possible Improvements
 
-- Add sound effects for catches and game over.
-- Replace the alert-based reset with an in-game restart screen.
 - Add touch support for mobile devices.
 - Make the canvas responsive to different screen sizes.
-- Add levels, lives, or multiple falling objects.
+- Replace the alert-based game over flow with an in-game restart screen.
+- Add sound effects for catches and game over.
+- Add multiple balls or difficulty levels.
 
 ## License
 
