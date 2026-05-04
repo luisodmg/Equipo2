@@ -15,7 +15,7 @@ let ball = {
   y: 0,
   radius: 15,
   speed: 3,
-  color: "red",
+  color: "#8cff95",
 };
 
 // 🧍 Control del jugador (la barra)
