@@ -6,7 +6,7 @@ const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
 // 🔧 Ajustes del lienzo
-canvas.width = 400;
+canvas.width = 700;
 canvas.height = 600;
 
 // 🏀 Configuración de la bola
@@ -15,7 +15,7 @@ let ball = {
   y: 0,
   radius: 15,
   speed: 3,
-  color: "#8cff95",
+  color: "yellow",
 };
 
 // 🧍 Control del jugador (la barra)
@@ -24,11 +24,14 @@ let catcher = {
   height: 10,
   x: canvas.width / 2 - 40, // Centrado al inicio
   y: canvas.height - 40,
-  color: "white",
+  color: "green",
 };
 
 let score = 0;
 let mouseX = canvas.width / 2;
+let scoreHistory = [];
+const maxScores = 5;
+const scoreTableBody = document.getElementById("scoreTableBody");
 
 // 🖱 Evento: mover el mouse
 canvas.addEventListener("mousemove", (e) => {
@@ -58,6 +61,7 @@ function update() {
 
   // 🚫 Si la bola cae fuera del canvas
   if (ball.y > canvas.height) {
+    saveScore();
     alert(`💀 Game Over! Score: ${score}`);
     score = 0;
     ball.speed = 3;
@@ -69,6 +73,29 @@ function update() {
 function resetBall() {
   ball.x = Math.random() * (canvas.width - ball.radius * 2) + ball.radius;
   ball.y = 0;
+}
+
+function saveScore() {
+  scoreHistory.unshift(score);
+  scoreHistory = scoreHistory.slice(0, maxScores);
+  renderScoreTable();
+}
+
+function renderScoreTable() {
+  scoreTableBody.innerHTML = "";
+
+  if (scoreHistory.length === 0) {
+    const emptyRow = document.createElement("tr");
+    emptyRow.innerHTML = `<td colspan="2">Sin partidas aun</td>`;
+    scoreTableBody.appendChild(emptyRow);
+    return;
+  }
+
+  scoreHistory.forEach((points, index) => {
+    const row = document.createElement("tr");
+    row.innerHTML = `<td>${index + 1}</td><td>${points}</td>`;
+    scoreTableBody.appendChild(row);
+  });
 }
 
 // 🎨 Dibujar todo en pantalla
@@ -99,3 +126,4 @@ function gameLoop() {
 }
 
 gameLoop();
+renderScoreTable();
