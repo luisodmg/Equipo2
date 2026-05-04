@@ -15,7 +15,7 @@ let ball = {
   y: 0,
   radius: 15,
   speed: 3,
-  color: "#8cff95",
+  color: "red",
 };
 
 // 🧍 Control del jugador (la barra)
@@ -24,7 +24,7 @@ let catcher = {
   height: 10,
   x: canvas.width / 2 - 40, // Centrado al inicio
   y: canvas.height - 40,
-  color: "white",
+  color: "blue",
 };
 
 let score = 0;
@@ -50,7 +50,7 @@ function update() {
     ball.x >= catcher.x &&
     ball.x <= catcher.x + catcher.width
   ) {
-    score++;
+    score = score + 2;
     resetBall();
     // Aumenta un poco la dificultad cada 5 puntos
     if (score % 5 === 0) ball.speed += 0.5;
